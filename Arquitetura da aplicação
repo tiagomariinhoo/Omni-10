@@ -1,0 +1,9 @@
+Arquitetura da aplicação: 
+
+Back-end
+    - Regras de negócio
+    - Conexão banco de dados
+    - Envio de email
+    - Comunicação com webservices
+    - Autenticação do usuário
+    - Criptografia e segurança
