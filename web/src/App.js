@@ -38,100 +38,55 @@
 //   );
 // }
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import api from './services/api'
 import './global.css';
 import './App.css';
 import './Sidebar.css';
 import './Main.css';
+
+import DevItem from './components/DevItem' //Colocando a pasta assim ele sempre pega o index.js
+import DevForm from './components/DevForm'
 /**
  * Aside: Tag no html para fazer a side bar
  * Main: conteúdo principal da aplicação
  */
 
+//Acesso em tempo real no que o usuário digitou no input usando o useState
+
 function App(){
+  const [devs, setDevs] = useState([]);
+
+  useEffect(() => {
+    async function loadDevs() {
+      const response = await api.get('/devs');
+
+      setDevs(response.data);
+    }
+
+    loadDevs();
+  }, []);
+  
+async function handleAddDev(data) { //Dispara essa função no submit do formulário
+  const response = await api.post('/devs', data)
+
+  setDevs([...devs, response.data]) //Adição em um array no JS
+
+  console.log(response)
+}
+
     return (
       <div id="app">
         <aside>
           <strong>Cadastrar</strong>
-          <form>
-            <div class="input-block">
-              <label htmlFor="github_username">Usuário do Github</label>
-              <input name="github_username" id="github_username" required></input>
-            </div>
-
-            <div class="input-block">
-              <label htmlFor="techs">Tecnologias</label>
-              <input name="techs" id="techs" required></input>
-            </div>
-
-          <div className="input-group">
-
-            <div class="input-block">
-              <label htmlFor="latitude">Latitude</label>
-              <input name="latitude" id="latitude" required></input>
-            </div>
-
-            <div class="input-block">
-              <label htmlFor="longitude">Longitude</label>
-              <input name="longitude" id="longitude" required></input>
-            </div>
-
-          </div>
-
-            <button type="submit">Salvar</button>
-
-          </form>
+          <DevForm onSubmit={handleAddDev}></DevForm>
         </aside>
         <main>
 
           <ul>
-            <li className="dev-item">
-              <header>
-                <img src="https://avatars3.githubusercontent.com/u/17099024?s=460&v=4" alt="Tiago Marinho"></img>
-                <div className="user-info">
-                  <strong>Tiago Marinho</strong>
-                  <span>ReactJS, React Native, Node.JS</span>
-                </div>
-              </header>
-              <p>Teste teste teste teste teste teste teste teste</p>
-              <a href="github.com/tiagomariinhoo">Acessar perfil no github</a>
-            </li>
-
-            <li className="dev-item">
-              <header>
-                <img src="https://avatars3.githubusercontent.com/u/17099024?s=460&v=4" alt="Tiago Marinho"></img>
-                <div className="user-info">
-                  <strong>Tiago Marinho</strong>
-                  <span>ReactJS, React Native, Node.JS</span>
-                </div>
-              </header>
-              <p>Teste teste teste teste teste teste teste teste</p>
-              <a href="github.com/tiagomariinhoo">Acessar perfil no github</a>
-            </li>
-
-            <li className="dev-item">
-              <header>
-                <img src="https://avatars3.githubusercontent.com/u/17099024?s=460&v=4" alt="Tiago Marinho"></img>
-                <div className="user-info">
-                  <strong>Tiago Marinho</strong>
-                  <span>ReactJS, React Native, Node.JS</span>
-                </div>
-              </header>
-              <p>Teste teste teste teste teste teste teste teste</p>
-              <a href="github.com/tiagomariinhoo">Acessar perfil no github</a>
-            </li>
-
-            <li className="dev-item">
-              <header>
-                <img src="https://avatars3.githubusercontent.com/u/17099024?s=460&v=4" alt="Tiago Marinho"></img>
-                <div className="user-info">
-                  <strong>Tiago Marinho</strong>
-                  <span>ReactJS, React Native, Node.JS</span>
-                </div>
-              </header>
-              <p>Teste teste teste teste teste teste teste teste</p>
-              <a href="github.com/tiagomariinhoo">Acessar perfil no github</a>
-            </li>
+            {devs.map(dev => ( //Coloca parenteses ao invés de chaves pq é o retorno da função
+                <DevItem key={dev._id} dev={dev}></DevItem>
+            ))}
           </ul>
 
         </main>

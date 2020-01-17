@@ -1,13 +1,22 @@
 const express = require('express'); //Importanto o módulo express
 const mongoose = require('mongoose')
 const routes = require('./routes') //Passa o caminho relativo ao arquivo
+const cors = require('cors')
 
 const app = express(); //Aplicação criada
+
+/**
+ * Importa o Cors para ser possível
+ * usar o react já que tão trabalhando
+ * em portas diferentes
+ */
 
 mongoose.connect('mongodb+srv://admin:admin@cluster0-qusey.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
-}) //String de conexão do mongoDB
+}); //String de conexão do mongoDB
+
+app.use(cors());
 
 app.use(express.json()) //O .use é algo que vai ser válido para todas as rotas da aplicação
             //Se colocasse .get seria válido apenas para o que começasse com .get
