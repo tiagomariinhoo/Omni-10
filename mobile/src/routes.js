@@ -19,6 +19,7 @@ const Routes = createAppContainer(
     }, {
         defaultNavigationOptions: {
             headerTintColor: '#FFF',
+            headerBackTitle: null, //Para não ficar aparecendo a última rota
             headerStyle: {
                 backgroundColor: '#7D40E7'
             }

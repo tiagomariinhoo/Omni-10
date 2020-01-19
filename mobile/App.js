@@ -45,10 +45,16 @@ import {StyleSheet, Text, View} from 'react-native'
 //   }
 // });
 
+/**
+ * Tudo que for usar, vê na documentação do expo.io
+ * Tipo os mapas: expo install react-native-maps 
+ * E vê como usa na documentação
+ */
+
 export default function App() {
   return (
     <>
-    <StatusBar barStyle='light-content'></StatusBar>
+    <StatusBar barStyle='light-content' backgroundColor="#7D40E7"></StatusBar>
     <Routes/>
     </>
   );
