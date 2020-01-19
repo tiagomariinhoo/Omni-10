@@ -2,8 +2,13 @@ const express = require('express'); //Importanto o módulo express
 const mongoose = require('mongoose')
 const routes = require('./routes') //Passa o caminho relativo ao arquivo
 const cors = require('cors')
+const http = require('http')
+const {setupWebsocket} = require('./websocket')
 
 const app = express(); //Aplicação criada
+const server = http.Server(app); //Agora temos o server http fora do express, então conseguimos trabalhar com ele diretamente
+
+setupWebsocket(server); //Agora a função será disparada assim que inicializar
 
 /**
  * Importa o Cors para ser possível
@@ -37,5 +42,6 @@ app.use(routes); //Agora todas as rotas estão aqui
 
 //MongoDB (Não-Relacional, aplicações que não possuem muitos relacionamentos)
 
-app.listen(3333); //3333: Porta
+// app.listen(3333); //3333: Porta
+server.listen(3333);
 

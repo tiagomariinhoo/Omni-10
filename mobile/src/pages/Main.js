@@ -4,7 +4,8 @@ import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'reac
 import { requestPermissionsAsync, getCurrentPositionAsync } from 'expo-location'
 import { MaterialIcons } from '@expo/vector-icons'
 
-import api from '../services/api'
+import api from '../services/api';
+import {connect, disconnect, subscribeToNewDevs} from '../services/socket';
 
 //Mesma coisa do react pra web mas troca a div pela view
 //Instala o react-navigation para navegar entre as pages
@@ -47,7 +48,23 @@ function Main({ navigation }) { //Desestruturação
         loadInitialPosition();
     }, []);
 
+    useEffect(() => { //Dispara uma função sempre que uma variável muda de valor
+        subscribeToNewDevs(dev => setDevs([...devs, dev]))
+    }, [devs]);
+
+    function setupWebsocket() {
+        const {latitude, longitude} = currentRegion;
+
+        connect(
+            latitude,
+            longitude,
+            techs,
+        );
+    }
+
     async function loadDevs() { //Pega a localização atualmente do mapa
+        disconnect(); //Para desconectar do socket caso esteja conectado
+
         const { latitude, longitude } = currentRegion;
 
         const response = await api.get('/search', { //Acessa a api
@@ -59,6 +76,7 @@ function Main({ navigation }) { //Desestruturação
         });
 
         setDevs(response.data.devs); //Seta os devs com a resposta que veio da api
+        setupWebsocket();
     }
 
     function handleRegionChanged(region) {
@@ -80,7 +98,7 @@ function Main({ navigation }) { //Desestruturação
                 {devs.map(dev => (
 
                     <Marker key={dev._id} coordinate={{ latitude: dev.location.coordinates[1], longitude: dev.location.coordinates[0] }}>
-                        <Image style={styles.avatar} source={{ uri: 'https://avatars3.githubusercontent.com/u/17099024?s=460&v=4' }}></Image>
+                        <Image style={styles.avatar} source={{ uri: dev.avatar_url }}></Image>
                         <Callout onPress={() => {
                             //Navegação
                             navigation.navigate('Profile', { github_username: dev.github_username }) //Passa o nome da tela 

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StatusBar } from 'react-native'
+import { StatusBar, YellowBox } from 'react-native'
 import Routes from './src/routes';
 import {StyleSheet, Text, View} from 'react-native'
 
@@ -50,6 +50,10 @@ import {StyleSheet, Text, View} from 'react-native'
  * Tipo os mapas: expo install react-native-maps 
  * E vê como usa na documentação
  */
+
+ YellowBox.ignoreWarnings([
+   'Unrecognized Websocket'
+ ]);
 
 export default function App() {
   return (

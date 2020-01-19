@@ -32,3 +32,17 @@ module.exports = {
         return response.json({devs});
     }
 }
+
+//Adiciona o protocolo websocket add yarn socket.io
+/**
+ * Basicamente, hoje o que acontece é fazer requisições HTTP
+ * 
+ * GET, POST, PUT E DELETE
+ * Front -> back -> Reposta front
+ * 
+ * Mas se o back quiser enviar algo pro front sem que haja requisição do front 
+ * já que hoje o back só pode devolver uma resposta para o front se houver uma requisição
+ * 
+ * Então temos que usar o protocolo webSocket para isso
+ * 
+ */

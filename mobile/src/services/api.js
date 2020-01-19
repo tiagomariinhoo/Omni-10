@@ -4,7 +4,7 @@ import axios from 'axios';
 //A porta coloca a do backend
 //Se tivesse usando emulador coloca 10.0.2.2
 const api = axios.create({
-    baseURL: 'http:192.168.0.12:3333',
+    baseURL: 'http://192.168.0.12:3333',
 
 });
 
